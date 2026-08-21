@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SLM Suite — Service Lifecycle Management</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div style="min-height:100vh; background:var(--sidebar-bg); display:flex; flex-direction:column;">
+
+    <nav style="display:flex; justify-content:space-between; align-items:center; padding:24px 48px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <div class="brand-mark">SLM</div>
+            <span style="color:#fff; font-family:'Space Grotesk'; font-weight:700; font-size:17px;">SLM Suite</span>
+        </div>
+        <a th:href="@{/login}" class="btn btn-primary">Sign In</a>
+    </nav>
+
+    <div style="flex:1; display:flex; align-items:center; justify-content:center; padding:40px;">
+        <div style="max-width:640px; text-align:center;">
+            <span style="color:var(--accent); font-family:'IBM Plex Mono'; font-size:13px; letter-spacing:0.08em; text-transform:uppercase;">Service Lifecycle Management</span>
+            <h1 style="color:#fff; font-size:44px; margin:16px 0 20px; line-height:1.15;">Parts, orders, and warranty claims — on one platform.</h1>
+            <p style="color:#9FB0C9; font-size:16px; line-height:1.6; margin-bottom:36px;">
+                A role-based system for managing spare parts inventory, dealer replenishment orders, warranty claims, and tiered pricing — built for equipment manufacturers and their dealer networks.
+            </p>
+            <a th:href="@{/login}" class="btn btn-primary" style="padding:13px 28px; font-size:15px;">Sign In to Continue</a>
+        </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:1px; background:rgba(255,255,255,0.08); border-top:1px solid rgba(255,255,255,0.08);">
+        <div style="background:var(--sidebar-bg); padding:28px 32px;">
+            <div style="color:var(--accent); font-family:'Space Grotesk'; font-weight:700; font-size:14px; margin-bottom:6px;">Inventory</div>
+            <p style="color:#9FB0C9; font-size:13px; line-height:1.5; margin:0;">Multi-warehouse stock tracking with automated low-stock alerts.</p>
+        </div>
+        <div style="background:var(--sidebar-bg); padding:28px 32px;">
+            <div style="color:var(--accent); font-family:'Space Grotesk'; font-weight:700; font-size:14px; margin-bottom:6px;">Orders</div>
+            <p style="color:#9FB0C9; font-size:13px; line-height:1.5; margin:0;">Dealer replenishment with a full placed-to-delivered lifecycle.</p>
+        </div>
+        <div style="background:var(--sidebar-bg); padding:28px 32px;">
+            <div style="color:var(--accent); font-family:'Space Grotesk'; font-weight:700; font-size:14px; margin-bottom:6px;">Warranty Claims</div>
+            <p style="color:#9FB0C9; font-size:13px; line-height:1.5; margin:0;">Customer claims tracked from submission through payout.</p>
+        </div>
+        <div style="background:var(--sidebar-bg); padding:28px 32px;">
+            <div style="color:var(--accent); font-family:'Space Grotesk'; font-weight:700; font-size:14px; margin-bottom:6px;">Pricing</div>
+            <p style="color:#9FB0C9; font-size:13px; line-height:1.5; margin:0;">Rule-based pricing by customer tier, with live quote calculation.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
