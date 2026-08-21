@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Warranty Claims — SLM Suite</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="shell">
+    <aside class="sidebar">
+        <div class="brand"><div class="brand-mark">SLM</div><div><div class="brand-name">SLM Suite</div><div class="brand-sub">Service Lifecycle</div></div></div>
+        <div class="nav-section" sec:authorize="hasRole('ADMIN')">Inventory</div>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/parts}" class="nav-link"><span class="dot"></span>Parts</a>
+        <div class="nav-section">Operations</div>
+        <a sec:authorize="hasAnyRole('ADMIN','DEALER')" th:href="@{/orders}" class="nav-link"><span class="dot"></span>Orders</a>
+        <a th:href="@{/claims}" class="nav-link active"><span class="dot"></span>Warranty Claims</a>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/pricing}" class="nav-link"><span class="dot"></span>Pricing</a>
+        <div class="sidebar-footer">
+            <span class="role-chip" sec:authorize="hasRole('ADMIN')">Admin</span>
+            <span class="role-chip" sec:authorize="hasRole('CUSTOMER')">Customer</span>
+            <form th:action="@{/logout}" method="post"><button type="submit" class="logout-btn">Log out</button></form>
+        </div>
+    </aside>
+
+    <main class="main">
+        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+        <div class="page-head">
+            <div><span class="page-eyebrow">Warranty</span><h1>Claims</h1></div>
+            <a th:href="@{/claims/new}" class="btn btn-primary">+ File Claim</a>
+        </div>
+
+        <div class="panel">
+            <table class="data" th:if="${!claims.isEmpty()}">
+                <thead><tr><th>Customer</th><th>Part</th><th>Serial No.</th><th>Purchase Date</th><th>Issue</th><th>Status</th><th>Submitted</th><th sec:authorize="hasRole('ADMIN')">Actions</th></tr></thead>
+                <tbody>
+                <tr th:each="claim : ${claims}">
+                    <td th:text="${claim.customer.username}"></td>
+                    <td th:text="${claim.part.name}"></td>
+                    <td class="cell-mono" th:text="${claim.serialNumber}"></td>
+                    <td class="cell-mono" th:text="${#temporals.format(claim.purchaseDate, 'dd MMM yyyy')}"></td>
+                    <td th:text="${claim.issueDescription}"></td>
+                    <td>
+                        <span class="pill" th:text="${claim.status}"
+                              th:classappend="${claim.status == 'PAID'} ? 'pill-success' :
+                                               (${claim.status == 'PARTS_ISSUED'} ? 'pill-primary' :
+                                               (${claim.status == 'REJECTED'} ? 'pill-danger' :
+                                               (${claim.status == 'UNDER_REVIEW'} ? 'pill-info' : 'pill-warning')))"></span>
+                    </td>
+                    <td class="cell-mono" th:text="${#temporals.format(claim.submittedAt, 'dd MMM, HH:mm')}"></td>
+                    <td class="btn-group-row" sec:authorize="hasRole('ADMIN')">
+                        <a th:if="${claim.status == 'SUBMITTED'}" th:href="@{/claims/review/{id}(id=${claim.id})}" class="btn btn-info btn-sm">Review</a>
+                        <a th:if="${claim.status == 'UNDER_REVIEW'}" th:href="@{/claims/approve/{id}(id=${claim.id})}" class="btn btn-success btn-sm">Approve</a>
+                        <a th:if="${claim.status == 'UNDER_REVIEW'}" th:href="@{/claims/reject/{id}(id=${claim.id})}" class="btn btn-danger btn-sm">Reject</a>
+                        <a th:if="${claim.status == 'PARTS_ISSUED'}" th:href="@{/claims/pay/{id}(id=${claim.id})}" class="btn btn-primary btn-sm">Mark Paid</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="empty-state" th:if="${claims.isEmpty()}"><h3>No claims yet</h3><p>Filed claims will appear here.</p></div>
+        </div>
+    </main>
+</div>
+</body>

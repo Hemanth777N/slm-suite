@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders — SLM Suite</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="shell">
+    <aside class="sidebar">
+        <div class="brand"><div class="brand-mark">SLM</div><div><div class="brand-name">SLM Suite</div><div class="brand-sub">Service Lifecycle</div></div></div>
+        <div class="nav-section" sec:authorize="hasRole('ADMIN')">Inventory</div>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/parts}" class="nav-link"><span class="dot"></span>Parts</a>
+        <div class="nav-section">Operations</div>
+        <a th:href="@{/orders}" class="nav-link active"><span class="dot"></span>Orders</a>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/claims}" class="nav-link"><span class="dot"></span>Warranty Claims</a>
+        <div class="sidebar-footer">
+            <span class="role-chip" sec:authorize="hasRole('ADMIN')">Admin</span>
+            <span class="role-chip" sec:authorize="hasRole('DEALER')">Dealer</span>
+            <form th:action="@{/logout}" method="post"><button type="submit" class="logout-btn">Log out</button></form>
+        </div>
+    </aside>
+    <main class="main">
+        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+        <div class="page-head">
+            <div><span class="page-eyebrow">Operations</span><h1>Orders</h1></div>
+            <a th:href="@{/orders/new}" class="btn btn-primary">+ Place Order</a>
+        </div>
+        <div class="panel">
+            <table class="data" th:if="${!orders.isEmpty()}">
+                <thead><tr><th>Part</th><th>Quantity</th><th>Status</th><th>Ordered</th><th sec:authorize="hasRole('ADMIN')">Actions</th></tr></thead>
+                <tbody>
+                <tr th:each="order : ${orders}">
+                    <td th:text="${order.part.name}"></td>
+                    <td th:text="${order.quantity}"></td>
+                    <td>
+                        <span class="pill" th:text="${order.status}"
+                              th:classappend="${order.status == 'DELIVERED'} ? 'pill-success' :
+                                               (${order.status == 'SHIPPED'} ? 'pill-primary' :
+                                               (${order.status == 'APPROVED'} ? 'pill-info' :
+                                               (${order.status == 'REJECTED'} ? 'pill-danger' : 'pill-warning')))"></span>
+                    </td>
+                    <td class="cell-mono" th:text="${#temporals.format(order.orderedAt, 'dd MMM, HH:mm')}"></td>
+                    <td class="btn-group-row" sec:authorize="hasRole('ADMIN')">
+                        <a th:if="${order.status == 'PLACED'}" th:href="@{/orders/approve/{id}(id=${order.id})}" class="btn btn-success btn-sm">Approve</a>
+                        <a th:if="${order.status == 'PLACED'}" th:href="@{/orders/reject/{id}(id=${order.id})}" class="btn btn-danger btn-sm">Reject</a>
+                        <a th:if="${order.status == 'APPROVED'}" th:href="@{/orders/ship/{id}(id=${order.id})}" class="btn btn-primary btn-sm">Ship</a>
+                        <a th:if="${order.status == 'SHIPPED'}" th:href="@{/orders/deliver/{id}(id=${order.id})}" class="btn btn-success btn-sm">Mark Delivered</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="empty-state" th:if="${orders.isEmpty()}"><h3>No orders yet</h3><p>Place an order to see it here.</p></div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

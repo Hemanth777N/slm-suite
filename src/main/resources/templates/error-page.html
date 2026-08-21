@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5" style="max-width: 600px;">
+    <div class="alert alert-danger">
+        <h4 th:text="${errorTitle}">Error</h4>
+        <p th:text="${errorMessage}">Something went wrong.</p>
+    </div>
+    <a href="/parts" class="btn btn-secondary">Back to Parts</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Parts Inventory — SLM Suite</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="shell">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-mark">SLM</div>
+            <div><div class="brand-name">SLM Suite</div><div class="brand-sub">Service Lifecycle</div></div>
+        </div>
+        <div class="nav-section">Inventory</div>
+        <a th:href="@{/parts}" class="nav-link active"><span class="dot"></span>Parts</a>
+        <a th:href="@{/warehouses}" class="nav-link"><span class="dot"></span>Warehouses</a>
+        <a th:href="@{/stock}" class="nav-link"><span class="dot"></span>Stock by Location</a>
+        <div class="nav-section">Operations</div>
+        <a th:href="@{/orders}" class="nav-link"><span class="dot"></span>Orders</a>
+        <a th:href="@{/claims}" class="nav-link"><span class="dot"></span>Warranty Claims</a>
+        <a th:href="@{/pricing}" class="nav-link"><span class="dot"></span>Pricing</a>
+        <div class="sidebar-footer">
+            <span class="role-chip">Admin</span>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="logout-btn">Log out</button>
+            </form>
+        </div>
+    </aside>
+
+    <main class="main">
+        <div th:if="${!lowStockParts.isEmpty()}" class="alert alert-warning">
+            <strong>Low stock:</strong>
+            <span th:each="p, iter : ${lowStockParts}">
+                <span th:text="${p.name} + ' (' + ${p.sku} + ')'"></span><span th:if="${!iter.last}">, </span>
+            </span>
+        </div>
+
+        <div class="page-head">
+            <div><span class="page-eyebrow">Inventory</span><h1>Parts</h1></div>
+            <a th:href="@{/parts/new}" class="btn btn-primary">+ Add Part</a>
+        </div>
+
+        <div class="panel">
+            <table class="data" th:if="${!parts.isEmpty()}">
+                <thead>
+                <tr><th>SKU</th><th>Name</th><th>Category</th><th>Base Price</th><th>Reorder At</th><th>Stock</th><th>Description</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                <tr th:each="part : ${parts}">
+                    <td class="cell-mono" th:text="${part.sku}"></td>
+                    <td th:text="${part.name}"></td>
+                    <td th:text="${part.category}"></td>
+                    <td th:text="${part.basePrice}"></td>
+                    <td th:text="${part.reorderThreshold}"></td>
+                    <td>
+                        <span class="pill" th:classappend="${part.stockQuantity < part.reorderThreshold} ? 'pill-danger' : 'pill-success'" th:text="${part.stockQuantity}"></span>
+                    </td>
+                    <td th:text="${part.description}" style="max-width:200px; color:var(--text-muted); font-size:13px;"></td>
+                    <td class="btn-group-row">
+                        <a th:href="@{/parts/edit/{id}(id=${part.id})}" class="btn btn-outline btn-sm">Edit</a>
+                        <a th:href="@{/parts/delete/{id}(id=${part.id})}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="empty-state" th:if="${parts.isEmpty()}">
+                <h3>No parts yet</h3>
+                <p>Add your first part to start tracking inventory.</p>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

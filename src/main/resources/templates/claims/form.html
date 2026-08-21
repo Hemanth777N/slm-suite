@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>File Claim — SLM Suite</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="shell">
+    <aside class="sidebar">
+        <div class="brand"><div class="brand-mark">SLM</div><div><div class="brand-name">SLM Suite</div></div></div>
+        <a th:href="@{/claims}" class="nav-link active"><span class="dot"></span>Warranty Claims</a>
+    </aside>
+    <main class="main" style="max-width:560px;">
+        <div class="page-head"><div><span class="page-eyebrow">Warranty</span><h1>File a Claim</h1></div></div>
+        <div class="panel panel-pad">
+            <form th:action="@{/claims/save}" method="post">
+                <div class="form-group">
+                    <label class="form-label">Part</label>
+                    <select name="partId" class="form-control" required>
+                        <option th:each="p : ${parts}" th:value="${p.id}" th:text="${p.name} + ' (' + ${p.sku} + ')'"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Serial Number</label>
+                    <input type="text" name="serialNumber" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Purchase Date</label>
+                    <input type="date" name="purchaseDate" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Issue Description</label>
+                    <textarea name="issueDescription" class="form-control" rows="4" required></textarea>
+                </div>
+                <div class="btn-group-row">
+                    <button type="submit" class="btn btn-primary">Submit Claim</button>
+                    <a th:href="@{/claims}" class="btn btn-outline">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+</body>
+</html>
