@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8">
+    <title>Warehouses — SLM Suite</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="shell">
+    <aside class="sidebar">
+        <div class="brand"><div class="brand-mark">SLM</div><div><div class="brand-name">SLM Suite</div></div></div>
+        <a th:href="@{/parts}" class="nav-link"><span class="dot"></span>Parts</a>
+        <a th:href="@{/warehouses}" class="nav-link active"><span class="dot"></span>Warehouses</a>
+        <a th:href="@{/stock}" class="nav-link"><span class="dot"></span>Stock by Location</a>
+    </aside>
+    <main class="main">
+        <div class="page-head">
+            <div><span class="page-eyebrow">Inventory</span><h1>Warehouses</h1></div>
+            <a th:href="@{/warehouses/new}" class="btn btn-primary">+ Add Warehouse</a>
+        </div>
+        <div class="panel">
+            <table class="data" th:if="${!warehouses.isEmpty()}">
+                <thead><tr><th>Name</th><th>Location</th></tr></thead>
+                <tbody>
+                <tr th:each="w : ${warehouses}">
+                    <td th:text="${w.name}"></td>
+                    <td th:text="${w.location}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="empty-state" th:if="${warehouses.isEmpty()}"><h3>No warehouses yet</h3></div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8">
+    <title>Stock by Location — SLM Suite</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="shell">
+    <aside class="sidebar">
+        <div class="brand"><div class="brand-mark">SLM</div><div><div class="brand-name">SLM Suite</div></div></div>
+        <a th:href="@{/parts}" class="nav-link"><span class="dot"></span>Parts</a>
+        <a th:href="@{/warehouses}" class="nav-link"><span class="dot"></span>Warehouses</a>
+        <a th:href="@{/stock}" class="nav-link active"><span class="dot"></span>Stock by Location</a>
+    </aside>
+    <main class="main">
+        <div class="page-head">
+            <div><span class="page-eyebrow">Inventory</span><h1>Stock by Location</h1></div>
+            <a th:href="@{/stock/new}" class="btn btn-primary">+ Record Entry</a>
+        </div>
+        <div class="panel">
+            <table class="data" th:if="${!stockEntries.isEmpty()}">
+                <thead><tr><th>Part</th><th>Warehouse</th><th>Quantity</th></tr></thead>
+                <tbody>
+                <tr th:each="s : ${stockEntries}">
+                    <td th:text="${s.part.name}"></td>
+                    <td th:text="${s.warehouse.name}"></td>
+                    <td th:text="${s.quantity}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="empty-state" th:if="${stockEntries.isEmpty()}"><h3>No stock entries yet</h3></div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

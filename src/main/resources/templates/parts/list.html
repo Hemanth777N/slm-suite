@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
     <meta charset="UTF-8">
     <title>Parts Inventory — SLM Suite</title>
     <link rel="stylesheet" href="/css/style.css">
@@ -44,7 +46,7 @@
         <div class="panel">
             <table class="data" th:if="${!parts.isEmpty()}">
                 <thead>
-                <tr><th>SKU</th><th>Name</th><th>Category</th><th>Base Price</th><th>Reorder At</th><th>Stock</th><th>Description</th><th>Actions</th></tr>
+                <tr><th>SKU</th><th>Name</th><th>Category</th><th>Base Price</th><th>Reorder At</th><th>Stock</th><th>Actions</th></tr>
                 </thead>
                 <tbody>
                 <tr th:each="part : ${parts}">
@@ -56,7 +58,6 @@
                     <td>
                         <span class="pill" th:classappend="${part.stockQuantity < part.reorderThreshold} ? 'pill-danger' : 'pill-success'" th:text="${part.stockQuantity}"></span>
                     </td>
-                    <td th:text="${part.description}" style="max-width:200px; color:var(--text-muted); font-size:13px;"></td>
                     <td class="btn-group-row">
                         <a th:href="@{/parts/edit/{id}(id=${part.id})}" class="btn btn-outline btn-sm">Edit</a>
                         <a th:href="@{/parts/delete/{id}(id=${part.id})}" class="btn btn-danger btn-sm">Delete</a>
